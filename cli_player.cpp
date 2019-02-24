@@ -27,7 +27,7 @@ Card* CliPlayer::get_proposed_move(Card* top_card, int pickup_num) {
   cout << line << '\n';
   for (int i{0}; i < cards.size(); ++i)
     cout << i+1 << ": " << cards[i]->as_string() << '\n';
-  cout << "0: Pickup " << pickup_num << ((pickup_num > 1) ? "cards" : "card") << '\n';
+  cout << "0: Pickup " << pickup_num << ((pickup_num > 1) ? " cards" : " card") << '\n';
   int choice;
   // what about letters?? cctype isdigit
   while (true) {

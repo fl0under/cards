@@ -9,6 +9,7 @@ const std::variant<Valid, Invalid, Incomplete> Rules::check_move(
   
   Action action;
   std::variant<Valid, Invalid, Incomplete> move_result;
+  move_result = Valid::other_player;
 
   // prev_action keeps track of ongoing +2's or 3's,
   // cannot put any other rank down (must pick up).
@@ -56,8 +57,6 @@ const std::variant<Valid, Invalid, Incomplete> Rules::check_move(
 
   if (action.type != ActionType::invalid_move)
     prev_action = action;
-
-  move_result = Valid::other_player;
 
   return move_result;
 }

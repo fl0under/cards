@@ -64,6 +64,8 @@ Valid GameManager::do_player_turn(Player& player) {
     for (int i{0}; i < num_to_pickup; ++i) 
       player_pickup(player);
   }
+
+  return turn;
 }
 
 void GameManager::player_pickup(Player& player) {
