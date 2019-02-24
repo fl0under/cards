@@ -4,10 +4,14 @@
 
 using namespace std;
 
-Card* CliPlayer::get_proposed_move(Card* top_card) {
+Card* CliPlayer::get_proposed_move(Card* top_card, int pickup_num) {
+  // Print out , should remove from here
+  string line = "*********************";
+  cout << '\n' << line << '\n';
+  cout << "\nPlayer " << name << "'s turn\n\n";
+
   // Print pretty things
   cout << "Card on top of pile:\n";
-  string line = "*********************";
   cout << line << '\n';
   int spaces = ((line.size() - top_card->as_string().size()) - 2) / 2;
   cout << "*";
@@ -23,7 +27,7 @@ Card* CliPlayer::get_proposed_move(Card* top_card) {
   cout << line << '\n';
   for (int i{0}; i < cards.size(); ++i)
     cout << i+1 << ": " << cards[i]->as_string() << '\n';
-  cout << "0: Pickup a card\n";
+  cout << "0: Pickup " << pickup_num << ((pickup_num > 1) ? "cards" : "card") << '\n';
   int choice;
   // what about letters?? cctype isdigit
   while (true) {
@@ -50,8 +54,12 @@ unique_ptr<Card> CliPlayer::accept_move() {
   return get_card(proposed_index);
 }
 
-void CliPlayer::notify(Action& action) {
-  if (action.type == ActionType::invalid_move) {
+void CliPlayer::notify_invalid_move(Invalid& move) {
+  if (move == Invalid::invalid_card) {
     cout << "\nMove Invalid. Please choose again.\n";
   }
+}
+
+Suit CliPlayer::ask_suit() {
+  return Suit::hearts;
 }

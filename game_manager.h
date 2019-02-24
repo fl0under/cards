@@ -19,7 +19,7 @@ class GameManager {
   private:
     void init();
     void game_loop();
-    void do_player_turn(Player& player, std::string name);
+    Valid do_player_turn(Player& player);
     void player_pickup(Player& player);
     Player& player1;
     Player& player2;

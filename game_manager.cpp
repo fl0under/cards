@@ -17,29 +17,46 @@ void GameManager::init() {
 }
 
 void GameManager::game_loop() {
+  Player* player;
+  Valid turn;
+  // Chose player to go first
+  player = &player1;
   while (true) {
-    do_player_turn(player1, "1");
-    do_player_turn(player2, "2");
+    do {
+      turn = do_player_turn(*player);
+    } while (turn == Valid::same_player);
+    player = (player == &player1) ? &player2 : &player1;
   }
 }
 
-void GameManager::do_player_turn(Player& player, string name) {
-  string line = "*********************";
-  cout << '\n' << line << '\n';
-  cout << "\nPlayer " << name << "'s turn\n\n";
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+Valid GameManager::do_player_turn(Player& player) {
+
   Card* discard_card = discard.view_card(discard.size()-1);
-  Card* card = player.get_proposed_move(discard_card);
+  int pickup_num = rules.get_pickup_num();
+  Card* card = player.get_proposed_move(discard_card, pickup_num);
+  Valid turn; // whose turn next?
+
   if (card) {
-    // Check if valid etc.
-    Action action = rules.check_move(card, discard_card);
-    player.notify(action);
-    if (action.type == ActionType::skip) {
-      discard.add_card(move(player.accept_move()));
-      do_player_turn(player, name); // Recursive
-    } else if (action.type == ActionType::invalid_move)
-      do_player_turn(player, name); // Recursive
-    else
-      discard.add_card(move(player.accept_move()));
+    std::variant<Valid, Invalid, Incomplete> result = rules.check_move(card, discard_card);
+
+    std::visit(overloaded {
+        [&](Valid arg) {
+          turn = arg; 
+          discard.add_card(move(player.accept_move()));
+        },
+        [&](Invalid arg) { 
+          player.notify_invalid_move(arg);
+          turn = Valid::same_player; // Not really valid of course
+        },
+        [&](Incomplete arg) {
+          rules.set_suit(player.ask_suit());
+          turn = Valid::other_player;
+        }
+    }, result);
+
   } else {
     // Pickup a card
     // Notify rules that player picked up

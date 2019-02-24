@@ -9,4 +9,8 @@ struct Action {
   Suit suit;
 };
 
+enum class Valid { other_player, same_player };
+enum class Invalid { invalid_card, invalid_card_plus2, invalid_card_plus3 };
+enum class Incomplete { ask_suit };
+
 #endif

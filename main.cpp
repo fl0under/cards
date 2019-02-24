@@ -10,8 +10,8 @@ int main() {
 
   try {
     Deck deck; 
-    CliPlayer player1;
-    CliPlayer player2;
+    CliPlayer player1("player one");
+    CliPlayer player2("player two");
     CardContainer discard;
 
     GameManager game_manager{player1, player2, deck, discard};
