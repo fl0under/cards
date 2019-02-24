@@ -8,7 +8,7 @@ Card* CliPlayer::get_proposed_move(Card* top_card, int pickup_num) {
   // Print out , should remove from here
   string line = "*********************";
   cout << '\n' << line << '\n';
-  cout << "\nPlayer " << name << "'s turn\n\n";
+  cout << "\n " << name << "'s turn\n\n";
 
   // Print pretty things
   cout << "Card on top of pile:\n";
@@ -61,5 +61,24 @@ void CliPlayer::notify_invalid_move(Invalid& move) {
 }
 
 Suit CliPlayer::ask_suit() {
-  return Suit::hearts;
+  cout << "Which suit would you like?\n";
+  vector<Suit> suits {Suit::clubs, Suit::hearts, Suit::spades, Suit::diamonds};
+  cout << 1 << ": " << "Clubs\n";
+  cout << 2 << ": " << "Hearts\n";
+  cout << 3 << ": " << "Spades\n";
+  cout << 4 << ": " << "Diamonds\n";
+
+  int choice;
+  while (true) {
+    string input;
+    getline(cin, input);
+    try {
+      choice = stoi(input);
+    } catch (...) {choice = -1;}
+    if (choice < 0 || choice > suits.size())
+      cout << "Error. Please choose from one of the suits shown.\n";
+    else break;
+  }
+
+  return suits.at(choice);
 }

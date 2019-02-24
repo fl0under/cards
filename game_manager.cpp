@@ -29,6 +29,7 @@ void GameManager::game_loop() {
   }
 }
 
+// To make other things eaiser
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
@@ -63,6 +64,7 @@ Valid GameManager::do_player_turn(Player& player) {
     int num_to_pickup = rules.notify_pickup();
     for (int i{0}; i < num_to_pickup; ++i) 
       player_pickup(player);
+    turn = Valid::other_player;
   }
 
   return turn;
