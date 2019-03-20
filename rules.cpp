@@ -29,7 +29,7 @@ const std::variant<Valid, Invalid, Incomplete> Rules::check_move(
 
   // Check for special cases first
   if (player_card->rank() == Rank::ace) {
-    action.type = ActionType::change_suit;
+    //action.type = ActionType::change_suit;
     move_result = Incomplete::ask_suit;
   } else if (player_card->rank() == Rank::two) {
     action.type = ActionType::pickup_two;
@@ -40,7 +40,7 @@ const std::variant<Valid, Invalid, Incomplete> Rules::check_move(
     if (prev_action.type == action.type)
       action.repeat++;
   } else if (player_card->rank() == Rank::jack) {
-    action.type = ActionType::skip;
+    //action.type = ActionType::skip;
     move_result = Valid::same_player;
   }
 
